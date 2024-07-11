@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evaluar Expresión Matemática</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+
+        #inputBox, #calculateButton {
+            margin: 10px;
+        }
+
+        #result {
+            margin-top: 20px;
+            font-size: 1.5em;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <input type="text" id="inputBox" placeholder="Ingresa tu expresión aquí">
+    <button id="calculateButton">Calcular</button>
+    <div id="result"></div>
+
+    <script>
+        const inputBox = document.getElementById('inputBox');
+        const calculateButton = document.getElementById('calculateButton');
+        const resultDiv = document.getElementById('result');
+
+        function logBase(base, value) {
+            return Math.log(value) / Math.log(base);
+        }
+
+        calculateButton.addEventListener('click', () => {
+            const expression = inputBox.value;
+
+            try {
+                const replacedExpression = expression
+                    .replace(/log(\d+)\((\d+)\)/gi, (_, base, value) => {
+                        return logBase(Number(base), Number(value));
+                    })
+                    .replace(/\^/g, '**');
+
+                const result = eval(replacedExpression);
+                resultDiv.textContent = `Resultado: ${result}`;
+            } catch (error) {
+                resultDiv.textContent = 'Error en la expresión';
+            }
+        });
+    </script>
+</body>
+</html>
